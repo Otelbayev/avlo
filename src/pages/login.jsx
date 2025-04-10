@@ -4,28 +4,34 @@ import { useAuth } from "../context/auth-context";
 import axios from "axios";
 import { useState } from "react";
 import Password from "antd/es/input/Password";
+import icon from "../../public/icon.jpg";
+import { LoaderCircle } from "lucide-react";
 
 export default function Login() {
-  const { login, loading } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const onFinish = async (values) => {
     try {
-      message.loading({ key: "er", content: "Loading..." });
+      message.loading({ key: "er", content: "Вход в систему..." });
+      setLoading(true);
       const res = await axios.post(
-        "http://localhost:3400/api/auth/login",
+        `${import.meta.env.VITE_BASE_API}/auth/login`,
         values
       );
 
       if (res.status === 200) {
-        message.success({ key: "er", content: res.data?.message });
         await login(res.data);
+        message.success({ key: "er", content: "Успешный вход в систему!" });
+        setLoading(false);
         navigate("/home");
       }
     } catch (e) {
+      message.error({ key: "er", content: "Ошибка при входе в систему" });
+      setLoading(false);
       setError(e.message);
-      message.error({ key: "er", content: "Error" });
     }
   };
 
@@ -33,23 +39,26 @@ export default function Login() {
     <div className="w-full h-screen flex items-center justify-center ">
       <div className="border border-slate-300 rounded-md p-5 shadow-lg w-md mx-4">
         <Form layout="vertical" onFinish={onFinish}>
+          <div className="flex items-center justify-center">
+            <img className="w-32 h-32 rounded-md shadow-lg" src={icon} alt="" />
+          </div>
           <Row gutter={[10, 10]}>
             <Col span={24}>
               <Form.Item
                 name="login"
-                label="Login"
+                label="Логин"
                 rules={[{ required: true }]}
               >
-                <Input />
+                <Input disabled={loading} />
               </Form.Item>
             </Col>
             <Col span={24}>
               <Form.Item
                 name="password"
-                label="Password"
+                label="Парол"
                 rules={[{ required: true }]}
               >
-                <Password />
+                <Password disabled={loading} />
               </Form.Item>
             </Col>
             <Col span={24}>
@@ -59,7 +68,11 @@ export default function Login() {
                 className="w-full"
                 htmlType="submit"
               >
-                Submit
+                {loading ? (
+                  <LoaderCircle className="animate-spin text-white" size={20} />
+                ) : (
+                  "вход"
+                )}
               </Button>
             </Col>
             {error && (

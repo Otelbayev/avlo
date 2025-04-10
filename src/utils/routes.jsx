@@ -3,6 +3,10 @@ import Loader from "../components/loader";
 
 const Home = lazy(() => import("../pages/home"));
 const Login = lazy(() => import("../pages/login"));
+const Profile = lazy(() => import("../pages/profile"));
+const Users = lazy(() => import("../pages/users"));
+const Employee = lazy(() => import("../pages/employee"));
+const EmployeeType = lazy(() => import("../pages/employee-type"));
 
 export const page = [
   {
@@ -18,8 +22,23 @@ export const page = [
 
 export const adminPage = [
   {
-    title: "Home",
     path: "/home",
     element: <Home />,
+  },
+  {
+    path: "/profile",
+    element: <Profile />,
+  },
+  {
+    path: "/users",
+    element: <Users />,
+  },
+  {
+    path: "/employee",
+    element: <Employee />,
+  },
+  {
+    path: "/employee-type",
+    element: <EmployeeType />,
   },
 ];
