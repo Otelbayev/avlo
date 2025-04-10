@@ -1,31 +1,30 @@
 import { Button, Col, Form, Input, message, Row } from "antd";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/auth-context";
-import axios from "axios";
+import { Navigate, useNavigate } from "react-router-dom";
+import axios from "../utils/axios";
 import { useState } from "react";
 import Password from "antd/es/input/Password";
 import icon from "../../public/icon.jpg";
 import { LoaderCircle } from "lucide-react";
+import { useAuth } from "../context/auth-context";
+import Loader from "../components/loader";
 
 export default function Login() {
-  const { login } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { login, auth } = useAuth();
 
   const onFinish = async (values) => {
     try {
       message.loading({ key: "er", content: "Вход в систему..." });
       setLoading(true);
-      const res = await axios.post(
-        `${import.meta.env.VITE_BASE_API}/auth/login`,
-        values
-      );
+      const res = await axios.post("/auth/login", values);
+      localStorage.setItem("token", res.data.token);
 
       if (res.status === 200) {
-        await login(res.data);
         message.success({ key: "er", content: "Успешный вход в систему!" });
         setLoading(false);
+        login(res.data.user);
         navigate("/home");
       }
     } catch (e) {
@@ -34,6 +33,14 @@ export default function Login() {
       setError(e.message);
     }
   };
+
+  if (auth.isLoading) {
+    return <Loader />;
+  }
+
+  if (auth.user) {
+    return <Navigate to="/home" />;
+  }
 
   return (
     <div className="w-full h-screen flex items-center justify-center ">

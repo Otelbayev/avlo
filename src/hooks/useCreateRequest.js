@@ -1,22 +1,11 @@
 import { message } from "antd";
-import axios from "axios";
-import { useAuth } from "../context/auth-context";
+import axios from "../utils/axios";
 
 const useCreateRequest = () => {
-  const { token } = useAuth();
-
   const createRequest = async (url, data = {}) => {
     message.loading({ key: "l", content: "Создание..." });
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASE_API}${url}`,
-        data,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      const response = await axios.post(url, data);
       message.success({ key: "l", content: "Успешно создано" });
       return response.data;
     } catch (error) {

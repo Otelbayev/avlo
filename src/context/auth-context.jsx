@@ -1,51 +1,43 @@
-import axios from "axios";
 import { createContext, useContext, useState, useEffect } from "react";
+import axios from "../utils/axios";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [auth, setAuth] = useState({
+    isLoading: true,
+    user: null,
+  });
 
   useEffect(() => {
     const verifyToken = async () => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        try {
-          const response = await axios.get(
-            `${VITE_BASE_API}/auth/check-token`,
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            }
-          );
-          setUser(response.data.user);
-          setToken(token);
-        } catch (error) {
-          setToken(null);
-          setUser(null);
-          localStorage.removeItem("token");
-        }
+      try {
+        const res = await axios.get("/auth/check-token");
+        setAuth({ isLoading: false, user: res.data.user });
+      } catch (error) {
+        setAuth({ isLoading: false, user: null });
       }
-      setLoading(false);
     };
     verifyToken();
   }, []);
 
-  const login = (userData) => {
-    setUser(userData.user);
-    setToken(userData.token);
-    localStorage.setItem("token", userData.token);
+  const logout = () => {
+    localStorage.removeItem("token");
+    setAuth({
+      isLoading: false,
+      user: null,
+    });
   };
 
-  const logout = () => {
-    setUser(null);
-    setToken(null);
-    localStorage.removeItem("token");
+  const login = (user) => {
+    setAuth({
+      isLoading: false,
+      user,
+    });
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading, token }}>
+    <AuthContext.Provider value={{ login, logout, auth }}>
       {children}
     </AuthContext.Provider>
   );

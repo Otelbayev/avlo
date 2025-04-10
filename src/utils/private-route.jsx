@@ -3,11 +3,11 @@ import { useAuth } from "../context/auth-context";
 import Loader from "../components/loader";
 
 const PrivateRoute = () => {
-  const { user, loading } = useAuth();
+  const { auth } = useAuth();
 
-  if (loading) return <Loader title="loadddd" />;
+  if (auth.isLoading) return <Loader />;
 
-  return user ? <Outlet /> : <Navigate to="/" replace />;
+  return auth.user ? <Outlet /> : <Navigate to="/" replace />;
 };
 
 export default PrivateRoute;

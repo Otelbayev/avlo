@@ -1,6 +1,6 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { adminPage, page } from "./utils/routes";
-import Layout from "./components/layout";
+import Layout from "./layouts/layout";
 import { AuthProvider } from "./context/auth-context";
 import { Suspense } from "react";
 import Loader from "./components/loader";
@@ -25,6 +25,7 @@ export default function App() {
               {adminPage.map(({ path, element }, index) => (
                 <Route path={path} element={element} key={index} />
               ))}
+              <Route path="*" element={<Navigate to={"/"} />} />
             </Route>
           </Route>
         </Routes>

@@ -2,48 +2,61 @@ import { Badge, Button, Flex, Popconfirm, Table } from "antd";
 import { Edit, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/auth-context";
-import axios from "axios";
+import axios from "../utils/axios";
+import { Link } from "react-router-dom";
+import useDeleteRequest from "../hooks/useDeleteRequest";
 
-export default function DataTable({ columns, url }) {
-  const { token, user } = useAuth();
+export default function DataTable({ columns, url, del, edit, status }) {
+  const {
+    auth: { user },
+  } = useAuth();
+
+  const { deleteRequest } = useDeleteRequest();
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(url);
+      if (res.status === 200) {
+        const mappedData = res.data.map((item, index) => ({
+          index: index + 1,
+          key: item.id || index,
+          ...item,
+        }));
+        setData(mappedData);
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error("Ошибка при загрузке данных:", error);
+    }
+  };
+
+  const onDel = async (id) => {
+    const res = await deleteRequest(`${del}/${id}`);
+
+    if (res) {
+      fetchData();
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const res = await axios.get(`${import.meta.env.VITE_BASE_API}${url}`, {
-          headers: { Authorization: token },
-        });
-
-        if (res.status === 200) {
-          const mappedData = res.data.map((item, index) => ({
-            index: index + 1,
-            key: item.id || index,
-            ...item,
-          }));
-          setData(mappedData);
-          setLoading(false);
-        }
-      } catch (error) {
-        setLoading(false);
-        console.error("Ошибка при загрузке данных:", error);
-      }
-    };
-
     fetchData();
-  }, [token, url]);
+  }, [url]);
 
-  const renderActions = () => (
+  const renderActions = ({ _id }) => (
     <Flex justify="center" gap={3}>
-      <Button type="primary" icon={<Edit size={15} />} />
+      <Link to={`${edit}/edit/${_id}`}>
+        <Button type="primary" icon={<Edit size={15} />} />
+      </Link>
       <Popconfirm
         title="Вы уверены, что хотите удалить это?"
         description="Это действие нельзя будет отменить."
         okText="Да"
         cancelText="Нет"
-        onConfirm={() => {}}
+        onConfirm={() => onDel(_id)}
       >
         <Button type="primary" danger icon={<Trash2 size={15} />} />
       </Popconfirm>
@@ -67,7 +80,7 @@ export default function DataTable({ columns, url }) {
     ...columns,
   ];
 
-  if (user.role === "superadmin") {
+  if (user.role === "superadmin" && !status) {
     baseColumns.push({
       key: "status",
       title: "Статус",
@@ -91,6 +104,7 @@ export default function DataTable({ columns, url }) {
       bordered
       size="small"
       loading={loading}
+      pagination={data.length > 10 ? true : false}
     />
   );
 }

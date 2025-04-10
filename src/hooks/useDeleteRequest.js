@@ -1,23 +1,12 @@
 import { message } from "antd";
-import axios from "axios";
-import { useAuth } from "../context/auth-context";
+import axios from "../utils/axios";
 
 const useDeleteRequest = () => {
-  const { token } = useAuth();
-
   const deleteRequest = async (url) => {
     message.loading({ key: "l", content: "Удаление..." });
 
     try {
-      const response = await axios.delete(
-        `${import.meta.env.VITE_BASE_API}${url}`,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
-
+      const response = await axios.delete(url);
       message.success({ key: "l", content: "Успешно удалено" });
       return response.data;
     } catch (error) {

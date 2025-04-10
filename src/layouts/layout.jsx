@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { Button, Flex, Layout } from "antd";
 import { Content, Header } from "antd/es/layout/layout";
-import Sidebar from "./sidebar";
+import Sidebar from "../components/sidebar";
 import {
   FullscreenExitOutlined,
   FullscreenOutlined,

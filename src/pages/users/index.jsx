@@ -1,5 +1,6 @@
-import { Card } from "antd";
 import DataTable from "../../components/data-table";
+import Wrapper from "../../layouts/wrapper";
+import { roles } from "../../utils/mock";
 
 const columns = [
   {
@@ -11,13 +12,19 @@ const columns = [
     key: "age",
     title: "Роль",
     dataIndex: "role",
+    render: (data) => roles.find((e) => e.value === data)?.label,
   },
 ];
 
 export default function Users() {
   return (
-    <Card title="Пользователи">
-      <DataTable columns={columns} url="/user/getall" />
-    </Card>
+    <Wrapper title="Пользователи">
+      <DataTable
+        columns={columns}
+        url="/user/getall"
+        del="/user"
+        edit="/users"
+      />
+    </Wrapper>
   );
 }

@@ -8,10 +8,9 @@ import { CircleX, Home, LogOut, UserPen } from "lucide-react";
 
 const Sidebar = ({ collapsed, setCollapsed, job, isMobile }) => {
   const sidebarItems = admin();
-  const {
-    logout,
-    user: { role },
-  } = useAuth();
+  const { auth, logout } = useAuth();
+  const { role } = auth.user;
+  const [dmenu, setDMenu] = useState(localStorage.getItem("menu") || "");
 
   const items = useMemo(() => {
     return sidebarItems.map((item) => {
@@ -35,7 +34,10 @@ const Sidebar = ({ collapsed, setCollapsed, job, isMobile }) => {
   }, [sidebarItems]);
 
   const [path, setPath] = useState(window.location.pathname);
+
   const onMenu = (e) => {
+    setDMenu(e.keyPath[1]);
+    localStorage.setItem("menu", e.keyPath[1]);
     setPath(e.key);
     if (isMobile) {
       setCollapsed(true);
@@ -81,7 +83,7 @@ const Sidebar = ({ collapsed, setCollapsed, job, isMobile }) => {
           className="py-[10px]"
           onClick={onMenu}
           selectedKeys={[path]}
-          defaultOpenKeys={["employee-main"]}
+          defaultOpenKeys={[dmenu]}
           items={[
             {
               label: <NavLink to={`/home`}>Главная</NavLink>,

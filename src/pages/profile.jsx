@@ -5,7 +5,10 @@ import useUpdateRequest from "../hooks/useUpdateRequest";
 
 export default function Profile() {
   const { updateRequest } = useUpdateRequest();
-  const { user, logout } = useAuth();
+  const {
+    auth: { user },
+    logout,
+  } = useAuth();
   const onFinish = async (e) => {
     delete e.newPassword1;
     const res = await updateRequest("/user/updateprofile", e);
