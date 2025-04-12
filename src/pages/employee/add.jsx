@@ -5,19 +5,20 @@ import {
   DatePicker,
   Form,
   Input,
+  InputNumber,
   Row,
   Select,
-  Upload,
 } from "antd";
 import axios from "../../utils/axios";
 import { useEffect, useState } from "react";
-import { UploadCloud } from "lucide-react";
 import useCreateRequest from "../../hooks/useCreateRequest";
 import { useNavigate } from "react-router-dom";
 
 export default function Add() {
   const { createRequest } = useCreateRequest();
   const navigate = useNavigate();
+  const [sal, setSal] = useState("");
+  const [employeeTypeOprtions, setEmployeeTypeOptions] = useState([]);
 
   const onFinish = async (e) => {
     const res = await createRequest("/employee/create", e);
@@ -25,19 +26,15 @@ export default function Add() {
       navigate("/employee");
     }
   };
-  const [employeeTypeOprtions, setEmployeeTypeOptions] = useState([]);
-
-  const normFile = (e) => {
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e?.fileList;
-  };
 
   const getEmployeeType = async () => {
     const res = await axios.get("/employeetype");
     setEmployeeTypeOptions(
-      res.data.map((e) => ({ label: e.type, value: e._id }))
+      res.data.map((e) => ({
+        label: e.type,
+        value: e._id,
+        work_type: e.work_type,
+      }))
     );
   };
 
@@ -98,9 +95,31 @@ export default function Add() {
               <Select
                 options={employeeTypeOprtions}
                 placeholder="Выберите тип сотрудника"
+                onChange={(e, data) => setSal(data.work_type)}
               />
             </Form.Item>
           </Col>
+          {sal === "salary" && (
+            <Col xs={24} md={6}>
+              <Form.Item
+                name="salary"
+                label="Зарплата (сум)"
+                rules={[
+                  { required: true, message: "Пожалуйста, введите Зарплата" },
+                ]}
+              >
+                <InputNumber
+                  className="!w-full"
+                  min={0}
+                  placeholder="Введите Зарплата"
+                  formatter={(value) =>
+                    value?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+                  }
+                  parser={(value) => value?.replace(/\./g, "")}
+                />
+              </Form.Item>
+            </Col>
+          )}
           <Col xs={24} md={6}>
             <Form.Item
               name="start_date"
@@ -111,31 +130,6 @@ export default function Add() {
               placeholder="Выберите дату начала"
             >
               <DatePicker className="w-full" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={6}>
-            <Form.Item
-              name="image"
-              label="Загрузить изображение"
-              valuePropName="fileList"
-              getValueFromEvent={normFile}
-              extra="Только файлы JPG/PNG"
-              rules={[
-                {
-                  required: true,
-                  message: "Пожалуйста, загрузите изображение",
-                },
-              ]}
-            >
-              <Upload
-                name="image"
-                listType="picture"
-                beforeUpload={() => false}
-              >
-                <Button icon={<UploadCloud size={15} />}>
-                  Нажмите, чтобы загрузить
-                </Button>
-              </Upload>
             </Form.Item>
           </Col>
           <Col span={24}>

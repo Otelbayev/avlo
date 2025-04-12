@@ -9,11 +9,17 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
 } from "@ant-design/icons";
+import { useAuth } from "../context/auth-context";
+import { roles } from "../utils/mock";
 
 const UniLayout = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [collapsed, setCollapsed] = useState(isMobile);
+  const {
+    auth: { user },
+  } = useAuth();
 
+  const role = roles.find((e) => e.value === user.role)?.label || "Супер Админ";
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   const openFullScreen = () => {
@@ -55,7 +61,16 @@ const UniLayout = () => {
           collapsed={collapsed}
           setCollapsed={setCollapsed}
           isMobile={isMobile}
-          job={<div>Jasurbek</div>}
+          job={
+            <>
+              <div className="uppercase"> {role}</div>
+              <div className="text-md py-2">
+                {user.employee?.surname || ""} {user.employee?.name || ""}{" "}
+                {user.employee?.patronymic || ""}
+              </div>
+              <div>{user.employee?.employee_type_id?.type || ""}</div>
+            </>
+          }
         />
         <Layout>
           <Content

@@ -67,9 +67,7 @@ const Sidebar = ({ collapsed, setCollapsed, job, isMobile }) => {
           className={`p-[15px] border-b border-white/30 flex items-center 
     ${isMobile ? "justify-between" : "justify-center"}`}
         >
-          <div className="text-[#d3d3d3] text-[16px] text-center uppercase">
-            {job}
-          </div>
+          <div className="text-[#d3d3d3] text-[16px] text-center">{job}</div>
           {isMobile && (
             <Button
               onClick={() => setCollapsed(true)}

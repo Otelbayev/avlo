@@ -2,7 +2,7 @@ import { Button, Card, Col, Form, Input, Row, Select } from "antd";
 import { roles } from "../../utils/mock";
 import { useNavigate, useParams } from "react-router-dom";
 import useUpdateRequest from "../../hooks/useUpdateRequest";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "../../utils/axios";
 
 export default function Update() {
@@ -10,6 +10,8 @@ export default function Update() {
   const { id } = useParams();
   const { updateRequest } = useUpdateRequest();
   const [form] = Form.useForm();
+
+  const [employees, setEemployees] = useState([]);
 
   const onFinish = async (e) => {
     const res = await updateRequest(`/user/${id}`, e);
@@ -21,14 +23,26 @@ export default function Update() {
   useEffect(() => {
     async function fetchData() {
       const res = await axios.get(`/user/${id}`);
+      console.log(res.data);
       form.setFieldsValue({
         login: res.data.login,
         role: res.data.role,
         isDeleted: res.data.isDeleted,
+        employee: res.data.employee?._id,
       });
     }
+    async function fetchEmployeeData() {
+      const res = await axios.get("/employee/select");
+      setEemployees(
+        res.data.map((e) => ({
+          label: `${e.surname} ${e.name} ${e.patronymic}`,
+          value: e._id,
+        }))
+      );
+    }
+    fetchEmployeeData();
     fetchData();
-  }, [id]);
+  }, []);
 
   return (
     <Card title="Обновлять пользователя">
@@ -66,6 +80,17 @@ export default function Update() {
               rules={[{ required: true, message: "Пожалуйста, выберите роль" }]}
             >
               <Select options={roles} placeholder="Выберите роль" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12}>
+            <Form.Item
+              name="employee"
+              label="Сотрудник"
+              rules={[
+                { required: true, message: "Пожалуйста, выберите Сотрудник" },
+              ]}
+            >
+              <Select options={employees} placeholder="Выберите Сотрудник" />
             </Form.Item>
           </Col>
           <Col xs={24} md={12}>

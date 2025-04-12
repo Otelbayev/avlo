@@ -23,6 +23,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("menu");
     setAuth({
       isLoading: false,
       user: null,

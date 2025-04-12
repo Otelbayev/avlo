@@ -1,4 +1,5 @@
 import DataTable from "../../components/data-table";
+import { useAuth } from "../../context/auth-context";
 import Wrapper from "../../layouts/wrapper";
 import { work_types } from "../../utils/mock";
 
@@ -21,15 +22,24 @@ const columns = [
     render: (data) =>
       work_types.find((e) => e.value === data?.work_type)?.label,
   },
+  {
+    key: "salary1",
+    title: "Зарплаты (сум)",
+    dataIndex: "salary",
+    render: (value) => value?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+  },
 ];
 
 export default function Employee() {
+  const {
+    auth: { user },
+  } = useAuth();
   return (
     <Wrapper title="Сотрудники">
       <DataTable
         columns={columns}
-        url="/employee"
-        del="/employee"
+        url={`/employee${user?.role === "accountant" ? "/accountant/get" : ""}`}
+        del={`/employee${user?.role === "accountant" ? "/accountant/del" : ""}`}
         edit="/employee"
       />
     </Wrapper>

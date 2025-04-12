@@ -9,6 +9,12 @@ const columns = [
     dataIndex: "login",
   },
   {
+    key: "employee",
+    title: "Сотрудник",
+    dataIndex: "employee",
+    render: (e) => `${e?.surname}  ${e?.name}  ${e?.patronymic}`,
+  },
+  {
     key: "age",
     title: "Роль",
     dataIndex: "role",

@@ -6,7 +6,7 @@ export const admin = () => {
       id: 1,
       key: "employee-main",
       label: "Сотрудники",
-      roles: ["superadmin"],
+      roles: ["superadmin", "accountant"],
       icon: <Users size={25} />,
       children: [
         { label: "Сотрудники", key: "employee" },

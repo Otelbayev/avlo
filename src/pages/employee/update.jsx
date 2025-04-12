@@ -4,30 +4,32 @@ import {
   Col,
   DatePicker,
   Form,
-  Image,
   Input,
+  InputNumber,
   Row,
   Select,
-  Upload,
 } from "antd";
 import axios from "../../utils/axios";
 import { useEffect, useState } from "react";
-import { UploadCloud } from "lucide-react";
 import useUpdateRequest from "../../hooks/useUpdateRequest";
 import { useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
+import { useAuth } from "../../context/auth-context";
 
 export default function Update() {
-  const [image, setImage] = useState(null);
   const { updateRequest } = useUpdateRequest();
   const navigate = useNavigate();
   const { id } = useParams();
   const [form] = Form.useForm();
+  const [sal, setSal] = useState("");
+  const {
+    auth: { user },
+  } = useAuth();
+  const [employeeTypeOprtions, setEmployeeTypeOptions] = useState([]);
 
   const getData = async () => {
     const res = await axios.get(`/employee/${id}`);
-
-    setImage(res.data.image);
+    setSal(res.data?.employee_type_id?.work_type);
 
     form.setFieldsValue({
       name: res.data.name,
@@ -36,29 +38,29 @@ export default function Update() {
       employee_type_id: res.data?.employee_type_id?._id,
       start_date: dayjs(res.data.start_date),
       isDeleted: res.data.isDeleted,
+      salary: res.data.salary,
     });
   };
 
   const onFinish = async (e) => {
-    const res = await updateRequest(`/employee/${id}`, e);
-
+    const res = await updateRequest(
+      `/employee${user?.role !== "superadmin" ? "/accountant" : ""}/${id}`,
+      e
+    );
     if (res) {
       navigate("/employee");
     }
   };
-  const [employeeTypeOprtions, setEmployeeTypeOptions] = useState([]);
-
-  const normFile = (e) => {
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e?.fileList;
-  };
 
   const getEmployeeType = async () => {
     const res = await axios.get("/employeetype");
+    console.log(res.data);
     setEmployeeTypeOptions(
-      res.data.map((e) => ({ label: e.type, value: e._id }))
+      res.data.map((e) => ({
+        label: e.type,
+        value: e._id,
+        work_type: e.work_type,
+      }))
     );
   };
 
@@ -120,9 +122,31 @@ export default function Update() {
               <Select
                 options={employeeTypeOprtions}
                 placeholder="Выберите тип сотрудника"
+                onChange={(e, data) => setSal(data.work_type)}
               />
             </Form.Item>
           </Col>
+          {sal === "salary" && (
+            <Col xs={24} md={6}>
+              <Form.Item
+                name="salary"
+                label="Зарплата (сум)"
+                rules={[
+                  { required: true, message: "Пожалуйста, введите Зарплата" },
+                ]}
+              >
+                <InputNumber
+                  className="!w-full"
+                  min={0}
+                  placeholder="Введите Зарплата"
+                  formatter={(value) =>
+                    value?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+                  }
+                  parser={(value) => value?.replace(/\./g, "")}
+                />
+              </Form.Item>
+            </Col>
+          )}
           <Col xs={24} md={6}>
             <Form.Item
               name="start_date"
@@ -135,48 +159,25 @@ export default function Update() {
               <DatePicker className="w-full" />
             </Form.Item>
           </Col>
-          <Col xs={24} md={6}>
-            <Form.Item
-              name="isDeleted"
-              label="Статус"
-              rules={[
-                { required: true, message: "Пожалуйста, выберите статус" },
-              ]}
-            >
-              <Select
-                options={[
-                  { label: "Активен", value: false },
-                  { label: "Удалён", value: true },
+          {user.role === "superadmin" && (
+            <Col xs={24} md={6}>
+              <Form.Item
+                name="isDeleted"
+                label="Статус"
+                rules={[
+                  { required: true, message: "Пожалуйста, выберите статус" },
                 ]}
-                placeholder="Выберите статус"
-              />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={6}>
-            <Form.Item
-              name="image"
-              label="Загрузить изображение"
-              valuePropName="fileList"
-              getValueFromEvent={normFile}
-              extra="Только файлы JPG/PNG"
-            >
-              <Upload
-                name="image"
-                listType="picture"
-                beforeUpload={() => false}
               >
-                <Button icon={<UploadCloud size={15} />}>
-                  Нажмите, чтобы загрузить
-                </Button>
-              </Upload>
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={6}>
-            <Form.Item name="img" label="Изображение">
-              <Image src={`${import.meta.env.VITE_IMG_API}/${image}`} />
-            </Form.Item>
-          </Col>
-
+                <Select
+                  options={[
+                    { label: "Активен", value: false },
+                    { label: "Удалён", value: true },
+                  ]}
+                  placeholder="Выберите статус"
+                />
+              </Form.Item>
+            </Col>
+          )}
           <Col span={24}>
             <Button type="primary" htmlType="submit">
               обновлять
