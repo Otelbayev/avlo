@@ -1,5 +1,5 @@
 import { Button, Card, Col, Form, Input, Row, Select } from "antd";
-import { roles } from "../../utils/mock";
+import { filterOption, roles } from "../../utils/mock";
 import useCreateRequest from "../../hooks/useCreateRequest";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -78,12 +78,17 @@ export default function Add() {
                 { required: true, message: "Пожалуйста, выберите Сотрудник" },
               ]}
             >
-              <Select options={employees} placeholder="Выберите Сотрудник" />
+              <Select
+                options={employees}
+                filterOption={filterOption}
+                showSearch
+                placeholder="Выберите Сотрудник"
+              />
             </Form.Item>
           </Col>
           <Col xs={24}>
             <Button htmlType="submit" type="primary">
-              создать
+              Создать
             </Button>
           </Col>
         </Row>

@@ -1,5 +1,5 @@
 import { Button, Card, Col, Form, Input, Row, Select } from "antd";
-import { roles } from "../../utils/mock";
+import { filterOption, roles } from "../../utils/mock";
 import { useNavigate, useParams } from "react-router-dom";
 import useUpdateRequest from "../../hooks/useUpdateRequest";
 import { useEffect, useState } from "react";
@@ -23,7 +23,7 @@ export default function Update() {
   useEffect(() => {
     async function fetchData() {
       const res = await axios.get(`/user/${id}`);
-      console.log(res.data);
+
       form.setFieldsValue({
         login: res.data.login,
         role: res.data.role,
@@ -90,7 +90,12 @@ export default function Update() {
                 { required: true, message: "Пожалуйста, выберите Сотрудник" },
               ]}
             >
-              <Select options={employees} placeholder="Выберите Сотрудник" />
+              <Select
+                options={employees}
+                filterOption={filterOption}
+                showSearch
+                placeholder="Выберите Сотрудник"
+              />
             </Form.Item>
           </Col>
           <Col xs={24} md={12}>
@@ -112,7 +117,7 @@ export default function Update() {
           </Col>
           <Col xs={24}>
             <Button htmlType="submit" type="primary">
-              обновлять
+              Обновлять
             </Button>
           </Col>
         </Row>

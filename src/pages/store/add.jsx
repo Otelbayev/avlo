@@ -10,7 +10,7 @@ export default function Add() {
   const onFinish = async (e) => {
     const res = await createRequest("/store/create", e);
     if (res) {
-      navigate("/store");
+      // navigate("/store");
     }
   };
 

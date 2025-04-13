@@ -43,7 +43,7 @@ export default function Add() {
           </Col>
           <Col span={24}>
             <Button htmlType="submit" type="primary">
-              создать
+              Создать
             </Button>
           </Col>
         </Row>

@@ -43,7 +43,7 @@ export default function Add() {
   };
 
   const getEmployeeType = async () => {
-    const res = await axios.get("/employeetype");
+    const res = await axios.get("/employeetype/accountant/get");
     setEmployeeTypeOptions(
       res.data.map((e) => ({
         label: e.type,

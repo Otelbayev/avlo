@@ -33,8 +33,8 @@ export default function WindowForm() {
     <Wrapper title={"Форма окна"}>
       <DataTable
         columns={columns}
-        url={`/w-form${user?.role === "storekeeper" ? "/store/get" : ""}`}
-        del={`/w-form${user?.role === "storekeeper" ? "/store/del" : ""}`}
+        url={`/w-form${user?.role === "tsex-manager" ? "/store/get" : ""}`}
+        del={`/w-form${user?.role === "tsex-manager" ? "/store/del" : ""}`}
         edit="/w-form"
       />
     </Wrapper>

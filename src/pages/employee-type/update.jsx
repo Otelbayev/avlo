@@ -86,7 +86,7 @@ export default function Update() {
           )}
           <Col span={24}>
             <Button htmlType="submit" type="primary">
-              обновлять
+              Обновлять
             </Button>
           </Col>
         </Row>

@@ -73,8 +73,7 @@ export default function Update() {
   };
 
   const getEmployeeType = async () => {
-    const res = await axios.get("/employeetype");
-    console.log(res.data);
+    const res = await axios.get("/employeetype/accountant/get");
     setEmployeeTypeOptions(
       res.data.map((e) => ({
         label: e.type,
@@ -221,7 +220,7 @@ export default function Update() {
           )}
           <Col span={24}>
             <Button type="primary" htmlType="submit">
-              обновлять
+              Обновлять
             </Button>
           </Col>
         </Row>

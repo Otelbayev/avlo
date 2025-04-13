@@ -38,7 +38,7 @@ export default function Update() {
     }
 
     const res = await updateRequest(
-      `/w-form${user.role === "storekeeper" ? "/store/update" : ""}/${id}`,
+      `/w-form${user.role === "tsex-manager" ? "/store/update" : ""}/${id}`,
       formData
     );
     if (res) {

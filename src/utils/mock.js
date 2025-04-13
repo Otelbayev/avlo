@@ -1,6 +1,5 @@
 export const roles = [
-  { value: "admin", label: "Админ" },
-  { value: "storekeeper", label: "Складовщик" },
+  { value: "storekeeper", label: "Складщик" },
   { value: "tsex-manager", label: "Начальник цеха" },
   { value: "accountant", label: "Бухгалтер" },
 ];
@@ -11,7 +10,11 @@ export const work_types = [
 ];
 
 export const dimensions = [
+  { value: "m", label: "Метр" },
   { value: "kg", label: "Килограмм" },
   { value: "sht", label: "Штука" },
   { value: "m2", label: "Квадратный метр" },
 ];
+
+export const filterOption = (input, option) =>
+  option.label.toLowerCase().includes(input.toLowerCase());

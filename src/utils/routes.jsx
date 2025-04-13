@@ -25,6 +25,10 @@ const WindowForm = lazy(() => import("../pages/w-form"));
 const WindowFormAdd = lazy(() => import("../pages/w-form/add"));
 const WindowFormUpdate = lazy(() => import("../pages/w-form/update"));
 
+const WindowSize = lazy(() => import("../pages/w-size"));
+const WindowSizeAdd = lazy(() => import("../pages/w-size/add"));
+const WindowSizeUpdate = lazy(() => import("../pages/w-size/update"));
+
 export const page = [
   {
     title: "Login",
@@ -106,5 +110,18 @@ export const adminPage = [
   {
     path: "/w-form/edit/:id",
     element: <WindowFormUpdate />,
+  },
+
+  {
+    path: "/w-size/add",
+    element: <WindowSizeAdd />,
+  },
+  {
+    path: "/w-size",
+    element: <WindowSize />,
+  },
+  {
+    path: "/w-size/edit/:id",
+    element: <WindowSizeUpdate />,
   },
 ];

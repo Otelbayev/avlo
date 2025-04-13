@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { admin } from "../utils/sidear";
+import { sidebar } from "../utils/sidear";
 import Sider from "antd/es/layout/Sider";
 import { Button, Menu } from "antd";
 import { NavLink } from "react-router-dom";
@@ -7,7 +7,7 @@ import { useAuth } from "../context/auth-context";
 import { CircleX, Home, LogOut, UserPen } from "lucide-react";
 
 const Sidebar = ({ collapsed, setCollapsed, job, isMobile }) => {
-  const sidebarItems = admin();
+  const sidebarItems = sidebar();
   const { auth, logout } = useAuth();
   const { role } = auth.user;
   const [dmenu, setDMenu] = useState(localStorage.getItem("menu") || "");
