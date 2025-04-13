@@ -1,4 +1,5 @@
 import DataTable from "../../components/data-table";
+import { useAuth } from "../../context/auth-context";
 import Wrapper from "../../layouts/wrapper";
 import { work_types } from "../../utils/mock";
 
@@ -17,14 +18,20 @@ const columns = [
 ];
 
 export default function EmployeeType() {
+  const {
+    auth: { user },
+  } = useAuth();
   return (
     <Wrapper title="Тип сотрудника">
       <DataTable
         columns={columns}
-        url="/employeetype"
-        del="/employeetype"
+        url={`/employeetype${
+          user.role === "accountant" ? "/accountant/get" : ""
+        }`}
+        del={`/employeetype${
+          user.role === "accountant" ? "/accountant/del" : ""
+        }`}
         edit="/employee-type"
-        status
       />
     </Wrapper>
   );

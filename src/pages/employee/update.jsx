@@ -4,10 +4,12 @@ import {
   Col,
   DatePicker,
   Form,
+  Image,
   Input,
   InputNumber,
   Row,
   Select,
+  Upload,
 } from "antd";
 import axios from "../../utils/axios";
 import { useEffect, useState } from "react";
@@ -15,6 +17,7 @@ import useUpdateRequest from "../../hooks/useUpdateRequest";
 import { useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import { useAuth } from "../../context/auth-context";
+import { UploadIcon } from "lucide-react";
 
 export default function Update() {
   const { updateRequest } = useUpdateRequest();
@@ -22,15 +25,17 @@ export default function Update() {
   const { id } = useParams();
   const [form] = Form.useForm();
   const [sal, setSal] = useState("");
+  const [img, setImg] = useState(null);
   const {
     auth: { user },
   } = useAuth();
   const [employeeTypeOprtions, setEmployeeTypeOptions] = useState([]);
+  const [file, setFile] = useState(null);
 
   const getData = async () => {
     const res = await axios.get(`/employee/${id}`);
     setSal(res.data?.employee_type_id?.work_type);
-
+    setImg(res.data.img);
     form.setFieldsValue({
       name: res.data.name,
       surname: res.data.surname,
@@ -43,9 +48,24 @@ export default function Update() {
   };
 
   const onFinish = async (e) => {
+    const formData = new FormData();
+    formData.append("surname", e.surname);
+    formData.append("name", e.name);
+    formData.append("patronymic", e.patronymic);
+    formData.append("employee_type_id", e.employee_type_id);
+    formData.append("start_date", e.start_date);
+    if (sal === "salary") {
+      formData.append("salary", e.salary);
+    }
+    if (file) {
+      formData.append("img", file);
+    }
+    if (user.role === "superadmin") {
+      formData.append("isDeleted", e.isDeleted);
+    }
     const res = await updateRequest(
       `/employee${user?.role !== "superadmin" ? "/accountant" : ""}/${id}`,
-      e
+      formData
     );
     if (res) {
       navigate("/employee");
@@ -176,6 +196,27 @@ export default function Update() {
                   placeholder="Выберите статус"
                 />
               </Form.Item>
+            </Col>
+          )}
+          <Col xs={24} md={6}>
+            <Form.Item label="Загрузить изображение" name="img">
+              <Upload
+                beforeUpload={() => false}
+                maxCount={1}
+                onChange={(info) => setFile(info.file)}
+              >
+                <Button icon={<UploadIcon size={15} />}>
+                  Выберите изображение
+                </Button>
+              </Upload>
+            </Form.Item>
+          </Col>
+          {img && (
+            <Col xs={24} md={6}>
+              <Image
+                src={`${import.meta.env.VITE_IMG_API}/uploads/${img}`}
+                alt="image"
+              />
             </Col>
           )}
           <Col span={24}>

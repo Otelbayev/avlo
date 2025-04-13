@@ -1,9 +1,9 @@
 import { Button, Card, Col, Form, Input, Row, Select } from "antd";
-import { work_types } from "../../utils/mock";
 import useUpdateRequest from "../../hooks/useUpdateRequest";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "../../utils/axios";
+import { dimensions } from "../../utils/mock";
 import { useEffect } from "react";
+import axios from "../../utils/axios";
 import { useAuth } from "../../context/auth-context";
 
 export default function Update() {
@@ -17,56 +17,53 @@ export default function Update() {
 
   const onFinish = async (e) => {
     const res = await updateRequest(
-      `/employeetype${user.role === "accountant" ? "/accountant" : ""}/${id}`,
+      `/store${user?.role === "storekeeper" ? "/store" : ""}/${id}`,
       e
     );
-    if (res.employeeType) {
-      navigate("/employee-type");
+    if (res) {
+      navigate(`/store`);
     }
   };
 
-  const getData = async () => {
-    const res = await axios.get(`/employeetype/${id}`);
-    form.setFieldsValue({
-      type: res.data.type,
-      work_type: res.data.work_type,
-      isDeleted: res.data.isDeleted,
-    });
-  };
-
   useEffect(() => {
-    getData();
+    async function fetchData() {
+      const res = await axios.get(`/store/${id}`);
+      form.setFieldsValue({
+        name: res.data.name,
+        type: res.data.type,
+        isDeleted: res.data.isDeleted,
+      });
+    }
+
+    fetchData();
   }, []);
 
   return (
-    <Card title="Обновлять тип сотрудника">
+    <Card title="Обновлять материалы">
       <Form layout="vertical" onFinish={onFinish} form={form}>
         <Row gutter={[10, 10]}>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={8}>
+            <Form.Item
+              name="name"
+              label="Название"
+              rules={[
+                { required: true, message: "Пожалуйста, введите название" },
+              ]}
+            >
+              <Input placeholder="Введите название" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={8}>
             <Form.Item
               name="type"
               label="Тип"
-              rules={[{ required: true, message: "Пожалуйста, введите Тип!" }]}
+              rules={[{ required: true, message: "Пожалуйста, выберите тип" }]}
             >
-              <Input />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12}>
-            <Form.Item
-              name="work_type"
-              label="Тип зарплаты"
-              rules={[
-                {
-                  required: true,
-                  message: "Пожалуйста, введите Тип зарплаты!",
-                },
-              ]}
-            >
-              <Select placeholder="Select type" options={work_types} />
+              <Select placeholder="Выберите тип" options={dimensions} />
             </Form.Item>
           </Col>
           {user.role === "superadmin" && (
-            <Col xs={24} md={6}>
+            <Col xs={24} md={8}>
               <Form.Item
                 name="isDeleted"
                 label="Статус"
@@ -85,7 +82,7 @@ export default function Update() {
             </Col>
           )}
           <Col span={24}>
-            <Button htmlType="submit" type="primary">
+            <Button type="primary" htmlType="submit">
               обновлять
             </Button>
           </Col>

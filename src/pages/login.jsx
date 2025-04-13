@@ -74,6 +74,8 @@ export default function Login() {
                 disabled={loading}
                 className="w-full"
                 htmlType="submit"
+                size="large"
+                style={{ background: "#003e3c" }}
               >
                 {loading ? (
                   <LoaderCircle className="animate-spin text-white" size={20} />

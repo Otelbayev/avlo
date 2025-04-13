@@ -44,7 +44,7 @@ export default function Add() {
                 { required: true, message: "Пожалуйста, введите логин!" },
               ]}
             >
-              <Input />
+              <Input placeholder="Введите логин" />
             </Form.Item>
           </Col>
           <Col xs={24} md={12}>
@@ -58,7 +58,7 @@ export default function Add() {
                 },
               ]}
             >
-              <Input />
+              <Input placeholder="Введите пароль" />
             </Form.Item>
           </Col>
           <Col xs={24} md={12}>

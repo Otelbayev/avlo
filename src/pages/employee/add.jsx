@@ -8,20 +8,35 @@ import {
   InputNumber,
   Row,
   Select,
+  Upload,
 } from "antd";
 import axios from "../../utils/axios";
 import { useEffect, useState } from "react";
 import useCreateRequest from "../../hooks/useCreateRequest";
 import { useNavigate } from "react-router-dom";
+import { UploadIcon } from "lucide-react";
 
 export default function Add() {
   const { createRequest } = useCreateRequest();
   const navigate = useNavigate();
   const [sal, setSal] = useState("");
   const [employeeTypeOprtions, setEmployeeTypeOptions] = useState([]);
+  const [file, setFile] = useState(null);
 
   const onFinish = async (e) => {
-    const res = await createRequest("/employee/create", e);
+    const formData = new FormData();
+    formData.append("surname", e.surname);
+    formData.append("name", e.name);
+    formData.append("patronymic", e.patronymic);
+    formData.append("employee_type_id", e.employee_type_id);
+    formData.append("start_date", e.start_date);
+    if (sal === "salary") {
+      formData.append("salary", e.salary);
+    }
+    if (file) {
+      formData.append("img", file);
+    }
+    const res = await createRequest("/employee/create", formData);
     if (res) {
       navigate("/employee");
     }
@@ -53,9 +68,8 @@ export default function Add() {
               rules={[
                 { required: true, message: "Пожалуйста, введите фамилию" },
               ]}
-              placeholder="Введите фамилию"
             >
-              <Input />
+              <Input placeholder="Введите фамилию" />
             </Form.Item>
           </Col>
           <Col xs={24} md={6}>
@@ -63,9 +77,8 @@ export default function Add() {
               name="name"
               label="Имя"
               rules={[{ required: true, message: "Пожалуйста, введите имя" }]}
-              placeholder="Введите имя"
             >
-              <Input />
+              <Input placeholder="Введите имя" />
             </Form.Item>
           </Col>
           <Col xs={24} md={6}>
@@ -75,9 +88,8 @@ export default function Add() {
               rules={[
                 { required: true, message: "Пожалуйста, введите отчество" },
               ]}
-              placeholder="Введите отчество"
             >
-              <Input />
+              <Input placeholder="Введите отчество" />
             </Form.Item>
           </Col>
           <Col xs={24} md={6}>
@@ -90,7 +102,6 @@ export default function Add() {
                   message: "Пожалуйста, выберите тип сотрудника",
                 },
               ]}
-              placeholder="Выберите тип сотрудника"
             >
               <Select
                 options={employeeTypeOprtions}
@@ -130,6 +141,19 @@ export default function Add() {
               placeholder="Выберите дату начала"
             >
               <DatePicker className="w-full" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={6}>
+            <Form.Item label="Загрузить изображение" name="img">
+              <Upload
+                beforeUpload={() => false}
+                maxCount={1}
+                onChange={(info) => setFile(info.file)}
+              >
+                <Button icon={<UploadIcon size={15} />}>
+                  Выберите изображение
+                </Button>
+              </Upload>
             </Form.Item>
           </Col>
           <Col span={24}>

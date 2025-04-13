@@ -24,7 +24,7 @@ export default function Add() {
               label="Тип"
               rules={[{ required: true, message: "Пожалуйста, введите Тип!" }]}
             >
-              <Input />
+              <Input placeholder="Введите тип" />
             </Form.Item>
           </Col>
           <Col xs={24} md={12}>
@@ -38,7 +38,7 @@ export default function Add() {
                 },
               ]}
             >
-              <Select placeholder="Select type" options={work_types} />
+              <Select placeholder="Выберите Тип" options={work_types} />
             </Form.Item>
           </Col>
           <Col span={24}>

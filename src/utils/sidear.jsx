@@ -1,9 +1,20 @@
-import { UserCog, Users } from "lucide-react";
+import { UserCog, Users, Warehouse } from "lucide-react";
 
 export const admin = () => {
   return [
     {
       id: 1,
+      key: "store-main",
+      label: "Склад",
+      roles: ["superadmin", "storekeeper"],
+      icon: <Warehouse size={25} />,
+      children: [
+        { label: "Материалы", key: "store" },
+        { label: "Форма окна", key: "w-form" },
+      ],
+    },
+    {
+      id: 2,
       key: "employee-main",
       label: "Сотрудники",
       roles: ["superadmin", "accountant"],
@@ -14,7 +25,7 @@ export const admin = () => {
       ],
     },
     {
-      id: 2,
+      id: 3,
       key: "users",
       label: "Пользователи",
       roles: ["superadmin"],
