@@ -17,7 +17,9 @@ export default function Update() {
 
   const onFinish = async (e) => {
     const res = await updateRequest(
-      `/employeetype${user.role === "accountant" ? "/accountant" : ""}/${id}`,
+      `/employeetype/update${
+        user.role === "accountant" ? "/accountant" : ""
+      }/${id}`,
       e
     );
     if (res.employeeType) {
@@ -26,7 +28,7 @@ export default function Update() {
   };
 
   const getData = async () => {
-    const res = await axios.get(`/employeetype/${id}`);
+    const res = await axios.get(`/employeetype/getbyid/${id}`);
     form.setFieldsValue({
       type: res.data.type,
       work_type: res.data.work_type,

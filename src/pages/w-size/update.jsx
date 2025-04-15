@@ -23,7 +23,9 @@ export default function Update() {
 
   const onFinish = async (e) => {
     const res = await updateRequest(
-      `/w-size${user?.role === "tsex-manager" ? "/manager" : ""}/${id}`,
+      `/w-size/update${
+        user?.role === "tsex-manager" ? "/tsex-manager" : ""
+      }/${id}`,
       e
     );
     if (res) {
@@ -32,26 +34,26 @@ export default function Update() {
   };
 
   async function fetchForm() {
-    const res = await axios.get("/w-form/store/get");
+    const res = await axios.get("/w-form/getall/tsex-manager");
     setFormOpt(
       res.data?.map((item) => ({ value: item?._id, label: item?.name }))
     );
   }
 
   async function fetchMaterial() {
-    const res = await axios.get("/store/store");
+    const res = await axios.get("/storetype/getall/storekeeper");
     setMaterialOpts(
       res.data.map((item) => ({ label: item?.name, value: item?._id }))
     );
   }
 
   async function getData() {
-    const res = await axios.get(`/w-size/${id}`);
+    const res = await axios.get(`/w-size/getbyid/${id}`);
     form.setFieldsValue({
       width: res.data.width,
       height: res.data.height,
       form: res.data?.form?._id,
-      materials: res.data?.materials?.map((e) => ({
+      store_type: res.data?.store_type?.map((e) => ({
         id: e.id?._id,
         count: e?.count,
       })),
@@ -108,7 +110,7 @@ export default function Update() {
             </Form.Item>
           </Col>
 
-          <Form.List name="materials">
+          <Form.List name="store_type">
             {(fields, { add, remove }) => (
               <>
                 {fields.map(({ key, name, ...restField }) => (

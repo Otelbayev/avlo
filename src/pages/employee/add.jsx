@@ -43,7 +43,7 @@ export default function Add() {
   };
 
   const getEmployeeType = async () => {
-    const res = await axios.get("/employeetype/accountant/get");
+    const res = await axios.get("/employeetype/getall/accountant");
     setEmployeeTypeOptions(
       res.data.map((e) => ({
         label: e.type,
@@ -110,27 +110,29 @@ export default function Add() {
               />
             </Form.Item>
           </Col>
-          {sal === "salary" && (
-            <Col xs={24} md={6}>
-              <Form.Item
-                name="salary"
-                label="Зарплата (сум)"
-                rules={[
-                  { required: true, message: "Пожалуйста, введите Зарплата" },
-                ]}
-              >
-                <InputNumber
-                  className="!w-full"
-                  min={0}
-                  placeholder="Введите Зарплата"
-                  formatter={(value) =>
-                    value?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-                  }
-                  parser={(value) => value?.replace(/\./g, "")}
-                />
-              </Form.Item>
-            </Col>
-          )}
+          <Col xs={24} md={6}>
+            <Form.Item
+              name="salary"
+              label={
+                sal === "salary"
+                  ? "Зарплата (сум)"
+                  : "Зарплата/квадрат метр (сум)"
+              }
+              rules={[
+                { required: true, message: "Пожалуйста, введите Зарплата" },
+              ]}
+            >
+              <InputNumber
+                className="!w-full"
+                min={0}
+                placeholder="Введите Зарплата"
+                formatter={(value) =>
+                  value?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+                }
+                parser={(value) => value?.replace(/\./g, "")}
+              />
+            </Form.Item>
+          </Col>
           <Col xs={24} md={6}>
             <Form.Item
               name="start_date"

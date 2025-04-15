@@ -33,7 +33,7 @@ export default function Update() {
   const [file, setFile] = useState(null);
 
   const getData = async () => {
-    const res = await axios.get(`/employee/${id}`);
+    const res = await axios.get(`/employee/getbyid/${id}`);
     setSal(res.data?.employee_type_id?.work_type);
     setImg(res.data.img);
     form.setFieldsValue({
@@ -54,9 +54,8 @@ export default function Update() {
     formData.append("patronymic", e.patronymic);
     formData.append("employee_type_id", e.employee_type_id);
     formData.append("start_date", e.start_date);
-    if (sal === "salary") {
-      formData.append("salary", e.salary);
-    }
+    formData.append("salary", e.salary);
+
     if (file) {
       formData.append("img", file);
     }
@@ -64,7 +63,9 @@ export default function Update() {
       formData.append("isDeleted", e.isDeleted);
     }
     const res = await updateRequest(
-      `/employee${user?.role !== "superadmin" ? "/accountant" : ""}/${id}`,
+      `/employee/update${
+        user?.role !== "superadmin" ? "/accountant" : ""
+      }/${id}`,
       formData
     );
     if (res) {
@@ -73,7 +74,7 @@ export default function Update() {
   };
 
   const getEmployeeType = async () => {
-    const res = await axios.get("/employeetype/accountant/get");
+    const res = await axios.get("/employeetype/getall/accountant");
     setEmployeeTypeOptions(
       res.data.map((e) => ({
         label: e.type,
@@ -145,27 +146,31 @@ export default function Update() {
               />
             </Form.Item>
           </Col>
-          {sal === "salary" && (
-            <Col xs={24} md={6}>
-              <Form.Item
-                name="salary"
-                label="Зарплата (сум)"
-                rules={[
-                  { required: true, message: "Пожалуйста, введите Зарплата" },
-                ]}
-              >
-                <InputNumber
-                  className="!w-full"
-                  min={0}
-                  placeholder="Введите Зарплата"
-                  formatter={(value) =>
-                    value?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-                  }
-                  parser={(value) => value?.replace(/\./g, "")}
-                />
-              </Form.Item>
-            </Col>
-          )}
+
+          <Col xs={24} md={6}>
+            <Form.Item
+              name="salary"
+              label={
+                sal === "salary"
+                  ? "Зарплата (сум)"
+                  : "Зарплата/квадрат метр (сум)"
+              }
+              rules={[
+                { required: true, message: "Пожалуйста, введите Зарплата" },
+              ]}
+            >
+              <InputNumber
+                className="!w-full"
+                min={0}
+                placeholder="Введите Зарплата"
+                formatter={(value) =>
+                  value?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+                }
+                parser={(value) => value?.replace(/\./g, "")}
+              />
+            </Form.Item>
+          </Col>
+
           <Col xs={24} md={6}>
             <Form.Item
               name="start_date"

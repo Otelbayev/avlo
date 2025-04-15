@@ -38,7 +38,9 @@ export default function Update() {
     }
 
     const res = await updateRequest(
-      `/w-form${user.role === "tsex-manager" ? "/store/update" : ""}/${id}`,
+      `/w-form/update${
+        user.role === "tsex-manager" ? "/tsex-manager" : ""
+      }/${id}`,
       formData
     );
     if (res) {
@@ -48,7 +50,7 @@ export default function Update() {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await axios.get(`/w-form/${id}`);
+      const res = await axios.get(`/w-form/getbyid/${id}`);
       form.setFieldsValue({
         name: res.data.name,
         isDeleted: res.data.isDeleted,

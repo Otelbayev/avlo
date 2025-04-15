@@ -28,7 +28,7 @@ export default function Users() {
       <DataTable
         columns={columns}
         url="/user/getall"
-        del="/user"
+        del="/user/delete"
         edit="/users"
       />
     </Wrapper>

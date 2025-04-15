@@ -17,9 +17,9 @@ const EmployeeType = lazy(() => import("../pages/employee-type"));
 const EmployeeTypeAdd = lazy(() => import("../pages/employee-type/add"));
 const EmployeeTypeUpdate = lazy(() => import("../pages/employee-type/update"));
 
-const Store = lazy(() => import("../pages/store"));
-const StoreAdd = lazy(() => import("../pages/store/add"));
-const StoreUpdate = lazy(() => import("../pages/store/update"));
+const Store = lazy(() => import("../pages/store-type"));
+const StoreAdd = lazy(() => import("../pages/store-type/add"));
+const StoreUpdate = lazy(() => import("../pages/store-type/update"));
 
 const WindowForm = lazy(() => import("../pages/w-form"));
 const WindowFormAdd = lazy(() => import("../pages/w-form/add"));
@@ -87,15 +87,15 @@ export const adminPage = [
     element: <EmployeeTypeUpdate />,
   },
   {
-    path: "/store/add",
+    path: "/store-type/add",
     element: <StoreAdd />,
   },
   {
-    path: "/store",
+    path: "/store-type",
     element: <Store />,
   },
   {
-    path: "/store/edit/:id",
+    path: "/store-type/edit/:id",
     element: <StoreUpdate />,
   },
 

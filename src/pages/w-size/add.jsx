@@ -22,14 +22,14 @@ export default function Add() {
   };
 
   async function fetchForm() {
-    const res = await axios.get("/w-form/store/get");
+    const res = await axios.get("/w-form/getall/tsex-manager");
     setFormOpt(
       res.data?.map((item) => ({ value: item?._id, label: item?.name }))
     );
   }
 
   async function fetchMaterial() {
-    const res = await axios.get("/store/store");
+    const res = await axios.get("/storetype/getall/storekeeper");
     setMaterialOpts(
       res.data.map((item) => ({ label: item?.name, value: item?._id }))
     );
@@ -84,7 +84,7 @@ export default function Add() {
             </Form.Item>
           </Col>
 
-          <Form.List name="materials">
+          <Form.List name="store_type">
             {(fields, { add, remove }) => (
               <>
                 {fields.map(({ key, name, ...restField }) => (

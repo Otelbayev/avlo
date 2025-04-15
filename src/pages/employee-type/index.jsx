@@ -25,11 +25,11 @@ export default function EmployeeType() {
     <Wrapper title="Тип сотрудника">
       <DataTable
         columns={columns}
-        url={`/employeetype${
-          user.role === "accountant" ? "/accountant/get" : ""
+        url={`/employeetype/getall${
+          user.role === "accountant" ? "/accountant" : ""
         }`}
-        del={`/employeetype${
-          user.role === "accountant" ? "/accountant/del" : ""
+        del={`/employeetype/delete${
+          user.role === "accountant" ? "/accountant" : ""
         }`}
         edit="/employee-type"
       />

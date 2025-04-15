@@ -17,17 +17,19 @@ export default function Update() {
 
   const onFinish = async (e) => {
     const res = await updateRequest(
-      `/store${user?.role === "storekeeper" ? "/store" : ""}/${id}`,
+      `/storetype/update${
+        user?.role === "storekeeper" ? "/storekeeper" : ""
+      }/${id}`,
       e
     );
     if (res) {
-      navigate(`/store`);
+      navigate(`/store-type`);
     }
   };
 
   useEffect(() => {
     async function fetchData() {
-      const res = await axios.get(`/store/${id}`);
+      const res = await axios.get(`/storetype/getbyid/${id}`);
       form.setFieldsValue({
         name: res.data.name,
         type: res.data.type,
@@ -39,7 +41,7 @@ export default function Update() {
   }, []);
 
   return (
-    <Card title="Обновлять материалы">
+    <Card title="Обновлять Тип материалы">
       <Form layout="vertical" onFinish={onFinish} form={form}>
         <Row gutter={[10, 10]}>
           <Col xs={24} md={8}>

@@ -38,8 +38,12 @@ export default function Employee() {
     <Wrapper title="Сотрудники">
       <DataTable
         columns={columns}
-        url={`/employee${user?.role === "accountant" ? "/accountant/get" : ""}`}
-        del={`/employee${user?.role === "accountant" ? "/accountant/del" : ""}`}
+        url={`/employee/getall${
+          user?.role === "accountant" ? "/accountant" : ""
+        }`}
+        del={`/employee/delete${
+          user?.role === "accountant" ? "/accountant" : ""
+        }`}
         edit="/employee"
       />
     </Wrapper>

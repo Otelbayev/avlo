@@ -25,7 +25,7 @@ export default function WindowSize() {
     {
       key: "width x height",
       title: "Ширина × Высота (м²)",
-      dataIndex: "area",
+      render: (e) => `${e.width} x ${e.height} = ${e.width * e.height}`,
       align: "center",
     },
     {
@@ -41,8 +41,12 @@ export default function WindowSize() {
     <Wrapper title="Размеры окон">
       <DataTable
         columns={cols}
-        url={`/w-size${user?.role === "tsex-manager" ? "/manager" : ""}`}
-        del={`/w-size${user?.role === "tsex-manager" ? "/manager" : ""}`}
+        url={`/w-size/getall${
+          user?.role === "tsex-manager" ? "/tsex-manager" : ""
+        }`}
+        del={`/w-size/delete${
+          user?.role === "tsex-manager" ? "/tsex-manager" : ""
+        }`}
         edit={`/w-size`}
       />
     </Wrapper>

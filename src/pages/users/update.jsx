@@ -14,7 +14,7 @@ export default function Update() {
   const [employees, setEemployees] = useState([]);
 
   const onFinish = async (e) => {
-    const res = await updateRequest(`/user/${id}`, e);
+    const res = await updateRequest(`/user/update/${id}`, e);
     if (res.user) {
       naviagate("/users");
     }
@@ -22,7 +22,7 @@ export default function Update() {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await axios.get(`/user/${id}`);
+      const res = await axios.get(`/user/getbyid/${id}`);
 
       form.setFieldsValue({
         login: res.data.login,

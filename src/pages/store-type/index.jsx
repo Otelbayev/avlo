@@ -23,12 +23,16 @@ export default function Store() {
   ];
 
   return (
-    <Wrapper title={"Материалы"}>
+    <Wrapper title={"Тип Материалы"}>
       <DataTable
         columns={columns}
-        url={`/store${user?.role === "storekeeper" ? "/store" : ""}`}
-        del={`/store${user?.role === "storekeeper" ? "/store" : ""}`}
-        edit="/store"
+        url={`/storetype/getall${
+          user?.role === "storekeeper" ? "/storekeeper" : ""
+        }`}
+        del={`/storetype/delete${
+          user?.role === "storekeeper" ? "/storekeeper" : ""
+        }`}
+        edit="/store-type"
       />
     </Wrapper>
   );

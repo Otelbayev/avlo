@@ -15,7 +15,7 @@ const admin = [
     label: "Склад",
     roles: ["superadmin"],
     icon: <Warehouse size={25} />,
-    children: [{ label: "Материалы", key: "store" }],
+    children: [{ label: "Тип Материалы", key: "store-type" }],
   },
   {
     label: "Цех",
@@ -77,8 +77,8 @@ const accountant = [
 
 const store = [
   {
-    label: "Материалы",
-    key: "store",
+    label: "Тип Материалы",
+    key: "store-type",
     roles: ["storekeeper"],
     icon: <StoreIcon size={25} />,
   },

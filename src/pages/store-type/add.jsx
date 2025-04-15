@@ -8,14 +8,14 @@ export default function Add() {
   const navigate = useNavigate();
 
   const onFinish = async (e) => {
-    const res = await createRequest("/store/create", e);
+    const res = await createRequest("/storetype/create", e);
     if (res) {
-      // navigate("/store");
+      navigate("/store-type");
     }
   };
 
   return (
-    <Card title="Создать материалы">
+    <Card title="Создать Тип материалы">
       <Form layout="vertical" onFinish={onFinish}>
         <Row gutter={[10, 10]}>
           <Col xs={24} md={12}>
