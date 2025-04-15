@@ -94,6 +94,7 @@ export default function DataTable({ columns, url, del, edit, status }) {
     key: "action",
     title: "Действие",
     width: 100,
+    fixed: "right",
     render: renderActions,
   });
 
@@ -101,6 +102,9 @@ export default function DataTable({ columns, url, del, edit, status }) {
     <Table
       dataSource={data}
       columns={baseColumns}
+      scroll={{
+        x: "max-content",
+      }}
       bordered
       size="small"
       loading={loading}
