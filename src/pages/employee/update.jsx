@@ -31,8 +31,10 @@ export default function Update() {
   } = useAuth();
   const [employeeTypeOprtions, setEmployeeTypeOptions] = useState([]);
   const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const getData = async () => {
+    setLoading(true);
     const res = await axios.get(`/employee/getbyid/${id}`);
     setSal(res.data?.employee_type_id?.work_type);
     setImg(res.data.img);
@@ -45,6 +47,7 @@ export default function Update() {
       isDeleted: res.data.isDeleted,
       salary: res.data.salary,
     });
+    setLoading(false);
   };
 
   const onFinish = async (e) => {
@@ -90,7 +93,7 @@ export default function Update() {
   }, []);
 
   return (
-    <Card title="Oбновлять сотрудника">
+    <Card title="Oбновлять сотрудника" loading={loading}>
       <Form layout="vertical" onFinish={onFinish} form={form}>
         <Row gutter={[10, 10]}>
           <Col xs={24} md={6}>
@@ -225,7 +228,7 @@ export default function Update() {
           )}
           <Col span={24}>
             <Button type="primary" htmlType="submit">
-              Обновлять
+              Обновить
             </Button>
           </Col>
         </Row>

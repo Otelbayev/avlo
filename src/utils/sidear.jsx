@@ -1,5 +1,7 @@
 import {
+  ArchiveIcon,
   Building2Icon,
+  Logs,
   ScalingIcon,
   Shapes,
   StoreIcon,
@@ -15,7 +17,10 @@ const admin = [
     label: "Склад",
     roles: ["superadmin"],
     icon: <Warehouse size={25} />,
-    children: [{ label: "Тип Материалы", key: "store-type" }],
+    children: [
+      { label: "Склад", key: "store" },
+      { label: "Тип Материалы", key: "store-type" },
+    ],
   },
   {
     label: "Цех",
@@ -23,6 +28,7 @@ const admin = [
     roles: ["superadmin"],
     icon: <Building2Icon size={25} />,
     children: [
+      { label: "Сборка окон", key: "w-assembly" },
       { label: "Размеры окон", key: "w-size" },
       { label: "Форма окна", key: "w-form" },
     ],
@@ -43,9 +49,28 @@ const admin = [
     roles: ["superadmin"],
     icon: <UserCog size={25} />,
   },
+  {
+    key: "archive",
+    label: "Архив",
+    roles: ["superadmin"],
+    icon: <ArchiveIcon size={25} />,
+    children: [{ label: "Склад", key: "archive/store" }],
+  },
+  {
+    key: "logs",
+    label: "Логи",
+    roles: ["superadmin"],
+    icon: <Logs size={25} />,
+  },
 ];
 
 const tsex = [
+  {
+    label: "Сборка окон",
+    key: "w-assembly",
+    roles: ["tsex-manager"],
+    icon: <Building2Icon size={25} />,
+  },
   {
     label: "Размеры окон",
     key: "w-size",

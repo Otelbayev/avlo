@@ -3,7 +3,7 @@ import { work_types } from "../../utils/mock";
 import useUpdateRequest from "../../hooks/useUpdateRequest";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "../../utils/axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../context/auth-context";
 
 export default function Update() {
@@ -14,6 +14,7 @@ export default function Update() {
   const {
     auth: { user },
   } = useAuth();
+  const [loading, setLoading] = useState(false);
 
   const onFinish = async (e) => {
     const res = await updateRequest(
@@ -28,12 +29,14 @@ export default function Update() {
   };
 
   const getData = async () => {
+    setLoading(true);
     const res = await axios.get(`/employeetype/getbyid/${id}`);
     form.setFieldsValue({
       type: res.data.type,
       work_type: res.data.work_type,
       isDeleted: res.data.isDeleted,
     });
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -41,7 +44,7 @@ export default function Update() {
   }, []);
 
   return (
-    <Card title="Обновлять тип сотрудника">
+    <Card title="Обновить тип сотрудника" loading={loading}>
       <Form layout="vertical" onFinish={onFinish} form={form}>
         <Row gutter={[10, 10]}>
           <Col xs={24} md={12}>
@@ -88,7 +91,7 @@ export default function Update() {
           )}
           <Col span={24}>
             <Button htmlType="submit" type="primary">
-              Обновлять
+              Обновить
             </Button>
           </Col>
         </Row>

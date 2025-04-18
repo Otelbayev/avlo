@@ -14,6 +14,7 @@ export default function Update() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
 
   const { updateRequest } = useUpdateRequest();
 
@@ -41,10 +42,12 @@ export default function Update() {
   }
 
   async function fetchMaterial() {
+    setLoading(true);
     const res = await axios.get("/storetype/getall/storekeeper");
     setMaterialOpts(
       res.data.map((item) => ({ label: item?.name, value: item?._id }))
     );
+    setLoading(false);
   }
 
   async function getData() {
@@ -67,7 +70,7 @@ export default function Update() {
   }, []);
 
   return (
-    <Card title="Обновлять размеры окон">
+    <Card title="Обновить размеры окон" loading={loading}>
       <Form layout="vertical" form={form} onFinish={onFinish}>
         <Row gutter={[10, 10]}>
           <Col xs={24} md={8}>
@@ -185,7 +188,7 @@ export default function Update() {
 
           <Col span={24}>
             <Button type="primary" htmlType="submit">
-              Обновлять
+              Обновить
             </Button>
           </Col>
         </Row>

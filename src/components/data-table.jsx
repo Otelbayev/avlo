@@ -6,7 +6,7 @@ import axios from "../utils/axios";
 import { Link } from "react-router-dom";
 import useDeleteRequest from "../hooks/useDeleteRequest";
 
-export default function DataTable({ columns, url, del, edit, status }) {
+export default function DataTable({ columns, url, del, edit, status, setSum }) {
   const {
     auth: { user },
   } = useAuth();
@@ -62,6 +62,12 @@ export default function DataTable({ columns, url, del, edit, status }) {
       </Popconfirm>
     </Flex>
   );
+
+  useEffect(() => {
+    if (setSum) {
+      setSum(data.reduce((e, i) => e + i.price, 0));
+    }
+  }, [setSum, data]);
 
   const renderStatus = (isDeleted) => (
     <Flex gap={5}>

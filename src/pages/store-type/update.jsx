@@ -14,6 +14,7 @@ export default function Update() {
   const {
     auth: { user },
   } = useAuth();
+  const [loading, setLoading] = useState(false);
 
   const onFinish = async (e) => {
     const res = await updateRequest(
@@ -29,19 +30,21 @@ export default function Update() {
 
   useEffect(() => {
     async function fetchData() {
+      setLoading(true);
       const res = await axios.get(`/storetype/getbyid/${id}`);
       form.setFieldsValue({
         name: res.data.name,
         type: res.data.type,
         isDeleted: res.data.isDeleted,
       });
+      setLoading(false);
     }
 
     fetchData();
   }, []);
 
   return (
-    <Card title="Обновлять Тип материалы">
+    <Card title="Обновить Тип материалы" loading={loading}>
       <Form layout="vertical" onFinish={onFinish} form={form}>
         <Row gutter={[10, 10]}>
           <Col xs={24} md={8}>
@@ -85,7 +88,7 @@ export default function Update() {
           )}
           <Col span={24}>
             <Button type="primary" htmlType="submit">
-              Обновлять
+              Обновить
             </Button>
           </Col>
         </Row>

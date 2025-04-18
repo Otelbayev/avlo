@@ -1,4 +1,4 @@
-import { Button, Card, Flex } from "antd";
+import { Button, Card, DatePicker, Flex } from "antd";
 import { Link } from "react-router-dom";
 
 export default function Wrapper({ children, title }) {

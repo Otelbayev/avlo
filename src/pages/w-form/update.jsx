@@ -23,6 +23,7 @@ export default function Update() {
   const { id } = useParams();
   const [form] = Form.useForm();
   const [img, setImg] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const {
     auth: { user },
@@ -50,18 +51,20 @@ export default function Update() {
 
   useEffect(() => {
     async function fetchData() {
+      setLoading(true);
       const res = await axios.get(`/w-form/getbyid/${id}`);
       form.setFieldsValue({
         name: res.data.name,
         isDeleted: res.data.isDeleted,
       });
       setImg(res.data.img);
+      setLoading(false);
     }
     fetchData();
   }, []);
 
   return (
-    <Card title="Обновлять форма окна">
+    <Card title="Обновить форма окна" loading={loading}>
       <Form layout="vertical" onFinish={onFinish} form={form}>
         <Row gutter={[10, 10]}>
           <Col xs={24} md={12}>
@@ -120,7 +123,7 @@ export default function Update() {
 
           <Col span={24}>
             <Button type="primary" htmlType="submit">
-              Обновлять
+              Обновить
             </Button>
           </Col>
         </Row>

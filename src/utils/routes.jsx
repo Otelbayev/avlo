@@ -17,9 +17,13 @@ const EmployeeType = lazy(() => import("../pages/employee-type"));
 const EmployeeTypeAdd = lazy(() => import("../pages/employee-type/add"));
 const EmployeeTypeUpdate = lazy(() => import("../pages/employee-type/update"));
 
-const Store = lazy(() => import("../pages/store-type"));
-const StoreAdd = lazy(() => import("../pages/store-type/add"));
-const StoreUpdate = lazy(() => import("../pages/store-type/update"));
+const StoreType = lazy(() => import("../pages/store-type"));
+const StoreTypeAdd = lazy(() => import("../pages/store-type/add"));
+const StoreTypeUpdate = lazy(() => import("../pages/store-type/update"));
+
+const Store = lazy(() => import("../pages/store"));
+const StoreAdd = lazy(() => import("../pages/store/add"));
+const StoreUpdate = lazy(() => import("../pages/store/update"));
 
 const WindowForm = lazy(() => import("../pages/w-form"));
 const WindowFormAdd = lazy(() => import("../pages/w-form/add"));
@@ -28,6 +32,13 @@ const WindowFormUpdate = lazy(() => import("../pages/w-form/update"));
 const WindowSize = lazy(() => import("../pages/w-size"));
 const WindowSizeAdd = lazy(() => import("../pages/w-size/add"));
 const WindowSizeUpdate = lazy(() => import("../pages/w-size/update"));
+
+const WindowAssembly = lazy(() => import("../pages/w-assembly"));
+const WindowAssemblyAdd = lazy(() => import("../pages/w-assembly/add"));
+const WindowAssemblyUpdate = lazy(() => import("../pages/w-assembly/update"));
+
+const ArchiveStore = lazy(() => import("../pages/archive/store"));
+const Logs = lazy(() => import("../pages/logs"));
 
 export const page = [
   {
@@ -88,14 +99,26 @@ export const adminPage = [
   },
   {
     path: "/store-type/add",
-    element: <StoreAdd />,
+    element: <StoreTypeAdd />,
   },
   {
     path: "/store-type",
-    element: <Store />,
+    element: <StoreType />,
   },
   {
     path: "/store-type/edit/:id",
+    element: <StoreTypeUpdate />,
+  },
+  {
+    path: "/store/add",
+    element: <StoreAdd />,
+  },
+  {
+    path: "/store",
+    element: <Store />,
+  },
+  {
+    path: "/store/edit/:id",
     element: <StoreUpdate />,
   },
 
@@ -123,5 +146,25 @@ export const adminPage = [
   {
     path: "/w-size/edit/:id",
     element: <WindowSizeUpdate />,
+  },
+  {
+    path: "/w-assembly",
+    element: <WindowAssembly />,
+  },
+  {
+    path: "/w-assembly/add",
+    element: <WindowAssemblyAdd />,
+  },
+  {
+    path: "/w-assembly/edit/:id",
+    element: <WindowAssemblyUpdate />,
+  },
+  {
+    path: "/archive/store",
+    element: <ArchiveStore />,
+  },
+  {
+    path: "/logs",
+    element: <Logs />,
   },
 ];

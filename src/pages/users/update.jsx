@@ -12,6 +12,7 @@ export default function Update() {
   const [form] = Form.useForm();
 
   const [employees, setEemployees] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const onFinish = async (e) => {
     const res = await updateRequest(`/user/update/${id}`, e);
@@ -22,6 +23,7 @@ export default function Update() {
 
   useEffect(() => {
     async function fetchData() {
+      setLoading(true);
       const res = await axios.get(`/user/getbyid/${id}`);
 
       form.setFieldsValue({
@@ -30,6 +32,7 @@ export default function Update() {
         isDeleted: res.data.isDeleted,
         employee: res.data.employee?._id,
       });
+      setLoading(false);
     }
     async function fetchEmployeeData() {
       const res = await axios.get("/employee/select");
@@ -45,7 +48,7 @@ export default function Update() {
   }, []);
 
   return (
-    <Card title="Обновлять пользователя">
+    <Card title="Обновить пользователя" loading={loading}>
       <Form layout="vertical" onFinish={onFinish} form={form}>
         <Row gutter={[10, 10]}>
           <Col xs={24} md={12}>
@@ -117,7 +120,7 @@ export default function Update() {
           </Col>
           <Col xs={24}>
             <Button htmlType="submit" type="primary">
-              Обновлять
+              Обновить
             </Button>
           </Col>
         </Row>
