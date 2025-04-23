@@ -107,6 +107,12 @@ const store = [
     roles: ["storekeeper"],
     icon: <StoreIcon size={25} />,
   },
+  {
+    label: "Склад",
+    key: "store",
+    roles: ["storekeeper"],
+    icon: <Warehouse size={25} />,
+  },
 ];
 
 export const sidebar = () => {

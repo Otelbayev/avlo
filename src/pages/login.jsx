@@ -3,7 +3,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import axios from "../utils/axios";
 import { useState } from "react";
 import Password from "antd/es/input/Password";
-import icon from "../../public/icon.jpg";
+import icon from "/icon.jpg";
 import { LoaderCircle } from "lucide-react";
 import { useAuth } from "../context/auth-context";
 import Loader from "../components/loader";
